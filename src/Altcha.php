@@ -14,7 +14,7 @@ class Altcha
      * @param string $hmacKey Required HMAC key for challenge calculation and solution verification.
      */
     public function __construct(
-        private readonly string $hmacKey,
+        #[\SensitiveParameter] private readonly string $hmacKey,
         private readonly HasherInterface $hasher = new Hasher()
     ) {
     }
