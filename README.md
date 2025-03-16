@@ -6,7 +6,7 @@ The ALTCHA PHP Library is a lightweight, zero-dependency library designed for cr
 
 This library is compatible with:
 
-- PHP 7.4+
+- PHP 8.1+
 - All major platforms (Linux, Windows, macOS)
 
 ## Example
@@ -33,16 +33,15 @@ require 'vendor/autoload.php';
 use AltchaOrg\Altcha\ChallengeOptions;
 use AltchaOrg\Altcha\Altcha;
 
-$hmacKey = 'secret hmac key';
+$altcha = new Altcha('secret hmac key');
 
 // Create a new challenge
 $options = new ChallengeOptions(
-    $hmacKey,
-    ChallengeOptions::DEFAULT_ALGORITHM,
-    50000, // the maximum random number
+    maxNumber: 50000, // the maximum random number
+    expires: (new \DateTimeImmutable())->add(new \DateInterval('PT10S')),
 ]);
 
-$challenge = Altcha::createChallenge($options);
+$challenge = $altcha->createChallenge($options);
 echo "Challenge created: " . json_encode($challenge) . "\n";
 
 // Example payload to verify
@@ -55,7 +54,7 @@ $payload = [
 ];
 
 // Verify the solution
-$ok = Altcha::verifySolution($payload, $hmacKey, true);
+$ok = $altcha->verifySolution($payload, true);
 
 if ($ok) {
     echo "Solution verified!\n";
@@ -76,28 +75,26 @@ Creates a new challenge for ALTCHA.
 
 ```php
 $options = new ChallengeOptions(
-    $hmacKey,
-    ChallengeOptions::DEFAULT_ALGORITHM,
-    ChallengeOptions::DEFAULT_MAX_NUMBER,
-    (new \DateTimeImmutable())->add(new \DateInterval('PT10S')),
-    ['query_param' => '123'],
-    ChallengeOptions::DEFAULT_SALT_LENGTH
+    algorithm: ChallengeOptions::DEFAULT_ALGORITHM,
+    maxNumber: ChallengeOptions::DEFAULT_MAX_NUMBER,
+    expires: (new \DateTimeImmutable())->add(new \DateInterval('PT10S')),
+    params: ['query_param' => '123'],
+    saltLength: ChallengeOptions::DEFAULT_SALT_LENGTH
 ]);
 ```
 
-### `Altcha::verifySolution(array|string $payload, string $hmacKey, bool $checkExpires): bool`
+### `Altcha::verifySolution(array|string $payload, bool $checkExpires): bool`
 
 Verifies an ALTCHA solution.
 
 **Parameters:**
 
 - `data array|string`: The solution payload to verify.
-- `hmacKey string`: The HMAC key used for verification.
 - `checkExpires bool`: Whether to check if the challenge has expired.
 
 **Returns:** `bool`
 
-### `Altcha::verifyFieldsHash(array $formData, array $fields, string $fieldsHash, string $algorithm): bool`
+### `Altcha::verifyFieldsHash(array $formData, array $fields, string $fieldsHash, Algorithm $algorithm): bool`
 
 Verifies the hash of form fields.
 
@@ -110,18 +107,17 @@ Verifies the hash of form fields.
 
 **Returns:** `bool`
 
-### `Altcha::verifyServerSignature(array|string $payload, string $hmacKey): ServerSignatureVerification`
+### `Altcha::verifyServerSignature(array|string $payload): ServerSignatureVerification`
 
 Verifies the server signature.
 
 **Parameters:**
 
 - `data array|string`: The payload to verify (string or `ServerSignaturePayload` array).
-- `hmacKey string`: The HMAC key used for verification.
 
 **Returns:** `ServerSignatureVerification`
 
-### `Altcha::solveChallenge(string $challenge, string $salt, string $algorithm, int $max, int $start = 0): array`
+### `Altcha::solveChallenge(string $challenge, string $salt, Algorithm $algorithm, int $max, int $start = 0): array`
 
 Finds a solution to the given challenge.
 

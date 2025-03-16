@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace AltchaOrg\Altcha;
 
+use AltchaOrg\Altcha\Hasher\Algorithm;
+
 class ServerSignaturePayload
 {
-    public string $algorithm;
-    public string $verificationData;
-    public string $signature;
-    public bool $verified;
-
-    public function __construct(string $algorithm, string $verificationData, string $signature, bool $verified)
-    {
-        $this->algorithm = $algorithm;
-        $this->verificationData = $verificationData;
-        $this->signature = $signature;
-        $this->verified = $verified;
+    public function __construct(
+        public readonly Algorithm $algorithm,
+        public readonly string $verificationData,
+        public readonly string $signature,
+        public readonly bool $verified,
+    ) {
     }
 }
