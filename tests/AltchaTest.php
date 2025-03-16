@@ -11,8 +11,8 @@ use PHPUnit\Framework\TestCase;
 
 class AltchaTest extends TestCase
 {
-    private static Hasher    $hasher;
-    private static Altcha    $altcha;
+    private static Hasher $hasher;
+    private static Altcha $altcha;
     private static Challenge $challenge;
 
     public static function setUpBeforeClass(): void
@@ -36,7 +36,7 @@ class AltchaTest extends TestCase
     {
         $formData = [
             'field1' => 'value1',
-            'field2' => 'value2'
+            'field2' => 'value2',
         ];
 
         $fields = ['field1', 'field2'];
@@ -100,7 +100,7 @@ class AltchaTest extends TestCase
     public function testVerifyServerSignature(): void
     {
         $algorithm = Algorithm::SHA256;
-        $expires = (new \DateTimeImmutable())->add(new \DateInterval('PT10S'));
+        $expires = (new DateTimeImmutable())->add(new DateInterval('PT10S'));
         $verificationData = 'verified=1&expire=' . $expires->getTimestamp();
 
         $hash = self::$hasher->hash($algorithm, $verificationData);
@@ -124,7 +124,7 @@ class AltchaTest extends TestCase
         $challenge = self::$altcha->createChallenge(new ChallengeOptions(
             algorithm: $algorithm,
             maxNumber: $maxNumber,
-            expires: (new \DateTimeImmutable())->add(new \DateInterval('PT10S')),
+            expires: (new DateTimeImmutable())->add(new DateInterval('PT10S')),
             params: ['custom_param' => '123'],
             saltLength: 3,
         ));
@@ -152,7 +152,7 @@ class AltchaTest extends TestCase
     public function testHandlesExpired(): void
     {
         $maxNumber = 100;
-        $expires = (new \DateTimeImmutable())->sub(new \DateInterval('PT10S'));
+        $expires = (new DateTimeImmutable())->sub(new DateInterval('PT10S'));
 
         $challenge = self::$altcha->createChallenge(new ChallengeOptions(
             maxNumber: $maxNumber,
