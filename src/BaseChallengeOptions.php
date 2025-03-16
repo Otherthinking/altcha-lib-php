@@ -17,6 +17,7 @@ class BaseChallengeOptions
 
     /**
      * Options for creation of a new challenge.
+     *
      * @see ChallengeOptions for options with sane defaults.
      *
      * @param ChallengeParams $params
