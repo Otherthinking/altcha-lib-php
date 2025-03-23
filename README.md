@@ -39,7 +39,7 @@ $altcha = new Altcha('secret hmac key');
 $options = new ChallengeOptions(
     maxNumber: 50000, // the maximum random number
     expires: (new \DateTimeImmutable())->add(new \DateInterval('PT10S')),
-]);
+);
 
 $challenge = $altcha->createChallenge($options);
 echo "Challenge created: " . json_encode($challenge) . "\n";
@@ -75,12 +75,12 @@ Creates a new challenge for ALTCHA.
 
 ```php
 $options = new ChallengeOptions(
-    algorithm: ChallengeOptions::DEFAULT_ALGORITHM,
-    maxNumber: ChallengeOptions::DEFAULT_MAX_NUMBER,
+    algorithm: Algorithm::SHA256,
+    maxNumber: BaseChallengeOptions::DEFAULT_MAX_NUMBER,
     expires: (new \DateTimeImmutable())->add(new \DateInterval('PT10S')),
     params: ['query_param' => '123'],
-    saltLength: ChallengeOptions::DEFAULT_SALT_LENGTH
-]);
+    saltLength: 12
+);
 ```
 
 ### `Altcha::verifySolution(array|string $payload, bool $checkExpires): bool`
