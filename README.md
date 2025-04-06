@@ -6,7 +6,7 @@ The ALTCHA PHP Library is a lightweight, zero-dependency library designed for cr
 
 This library is compatible with:
 
-- PHP 8.1+
+- PHP 8.2+ (use version v0.x.x for older PHP version)
 - All major platforms (Linux, Windows, macOS)
 
 ## Example
