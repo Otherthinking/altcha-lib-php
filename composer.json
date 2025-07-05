@@ -1,5 +1,5 @@
 {
-    "name": "altcha-org/altcha",
+    "name": "otherthinking/altcha-lib-php",
     "type": "library",
     "license": "MIT",
     "autoload": {
